@@ -1,21 +1,41 @@
+import axios from "axios";
+import useAuth from "../Hooks/useAuth";
+
 
 
 const AddFood = () => {
+    const {user,} = useAuth();
+    
+   const {displayName,email,photoURl}= user || {};
+   console.log(displayName,email,photoURl,'user not found')
+   const handleAddFood = async e => {
+    e.preventDefault();
 
-    const handleAddFood = e => {
-        e.preventDefault()
-        const form = e.target
-        const foodName = form.target.foodName.value;
-        const foodImage = form.target.foodImage.value;
-        const foodUrl = form.target.foodUrl.value;
-        const foodQuantity = form.target.foodQuantity.value;
-        const pickupLocation = form.target.pickupLocation.value;
-        const expiredDateTime = form.target.expiredDateTime.value;
-        const additionalNotes = form.target.additionalNotes.value;
-        const status = 'available'
-        console.log(foodName, foodImage, foodQuantity, pickupLocation, expiredDateTime, additionalNotes,foodUrl,status)
+    const form = e.target;
+    const formData = new FormData(form);
 
+    const foodName = formData.get("foodName");
+    const foodUrl = formData.get("foodImageURL");
+    const foodQuantity = formData.get("foodQuantity");
+    const pickupLocation = formData.get("pickupLocation");
+    const expiredDateTime = formData.get("expiredDateTime");
+    const additionalNotes = formData.get("additionalNotes");
+    const status = "available";
+    const donator = {
+        displayName,
+        email,
+        photoURl
     };
+
+    const foodData={foodName,  foodQuantity, pickupLocation, expiredDateTime, additionalNotes, foodUrl, status, donator,};
+    try {
+        const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/foods`,foodData) 
+        console.log(data);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 
 
 
@@ -41,11 +61,10 @@ const AddFood = () => {
                     <label htmlFor="foodName" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Food Name</label>
                     <input id="foodName" type="text" name="foodName" placeholder="Enter food name" className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
 
-                    <label htmlFor="foodImage" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Food Image</label>
+                    <label htmlFor="foodImage" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Food Image URl</label>
                     <div className="flex items-center">
-                        <input id="foodImage" type="file" accept="image/*" name="foodImageFile" className="block w-full p-3 mt-2 mr-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
-                        <h1 className="pr-2">or</h1>
-                        <input id="foodImageURL" type="url" name="foodImageURL" placeholder="Enter image URL" className="block p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" />
+                  
+                    <input id="foodImageURL" type="url" name="foodImageURL" placeholder="Enter image URL" className="container p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
                     </div>
 
 
@@ -53,8 +72,8 @@ const AddFood = () => {
                     <input id="foodQuantity" type="number" name="foodQuantity" placeholder="Enter food quantity" className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
 
                     <label htmlFor="pickupLocation" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Pickup Location</label>
-                    <select id="pickupLocation" name="pickupLocation" className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required>
-                        <option value="" disabled selected>Select pickup location</option>
+                    <select id="pickupLocation" name="pickupLocation" defaultValue="" className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required>
+                        <option value="" disabled>Select pickup location</option>
                         <option value="Dhaka">Dhaka</option>
                         <option value="Cumilla">Cumilla</option>
                         <option value="Sylhet">Sylhet</option>

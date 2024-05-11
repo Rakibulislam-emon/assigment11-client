@@ -29,7 +29,8 @@ const router = createBrowserRouter([
             },
             {
                 path:"/available-food",
-                element:<AvilableFood/>
+                element:<AvilableFood/>,
+                
             },
             {
                 path:"/add-food",
