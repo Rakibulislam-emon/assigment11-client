@@ -1,13 +1,15 @@
 import axios from "axios";
 import useAuth from "../Hooks/useAuth";
+import toast from "react-hot-toast";
 
 
 
 const AddFood = () => {
     const {user,} = useAuth();
     
-   const {displayName,email,photoURl}= user || {};
-   console.log(displayName,email,photoURl,'user not found')
+   const {displayName,email,photoURL}= user || {};
+   console.log(displayName,email,photoURL,'user not found')
+   
    const handleAddFood = async e => {
     e.preventDefault();
 
@@ -24,13 +26,18 @@ const AddFood = () => {
     const donator = {
         displayName,
         email,
-        photoURl
+        photoURL
     };
 
     const foodData={foodName,  foodQuantity, pickupLocation, expiredDateTime, additionalNotes, foodUrl, status, donator,};
     try {
         const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/foods`,foodData) 
         console.log(data);
+        if( data.insertedId ){
+
+            toast.success('your food has been successfully added')
+            form.reset();
+        }
     } catch (error) {
         console.log(error);
     }

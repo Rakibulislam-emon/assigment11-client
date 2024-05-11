@@ -8,6 +8,7 @@ import ManageMyFood from '../Components/ManageMyFood';
 import MyFoodRequest from '../Components/MyFoodRequest';
 import Home from '../Home/Home';
 import ErrorPage from '../Components/ErrorPage';
+import SingleFoodDetails from '../Pages/SingleFoodDetails';
 
 const router = createBrowserRouter([
     {
@@ -44,6 +45,11 @@ const router = createBrowserRouter([
                 path:"/my-food-Request",
                 element:<MyFoodRequest/>
             },
+            {
+                path:'/single-food-details/:id',
+                element:<SingleFoodDetails/>,
+                loader:({params})=> fetch(`http://localhost:5000/api/foods/${params.id}`)
+            }
         ]
     }
 ])
