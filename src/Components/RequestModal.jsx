@@ -35,14 +35,14 @@ const RequestModal = ({ onClose, foods }) => {
         const requestedDate = form.requestDate.value;
         const userEmail = user?.email;
         const additionalNotes = form.additionalNotes.value
-        const status = 'unavailable'
+        const status = 'requested'
          _id,email 
 
 
     //    console.log ( requestedDate, foodName, foodUrl, donator, pickupLocation, expiredDateTime, _id,email )
 
         try {
-           const {data}= await  axios.put(`http://localhost:5000/foods/${_id}`, {
+           const {data}= await  axios.put(`${import.meta.env.VITE_API_URL}/foods/${_id}`, {
                userEmail , _id,email, requestedDate ,status ,additionalNotes
             })
             

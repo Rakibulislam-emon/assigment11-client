@@ -43,20 +43,6 @@ const AddFood = () => {
     }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     return (
 
         <div className="grid min-h-screen place-items-center" style={{

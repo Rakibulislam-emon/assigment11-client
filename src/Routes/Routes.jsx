@@ -9,6 +9,7 @@ import MyFoodRequest from '../Components/MyFoodRequest';
 import Home from '../Home/Home';
 import ErrorPage from '../Components/ErrorPage';
 import SingleFoodDetails from '../Pages/SingleFoodDetails';
+import UpdateMyFoodRequest from '../Pages/UpdateMyFoodRequest';
 
 const router = createBrowserRouter([
     {
@@ -48,7 +49,12 @@ const router = createBrowserRouter([
             {
                 path:'/single-food-details/:id',
                 element:<SingleFoodDetails/>,
-                loader:({params})=> fetch(`http://localhost:5000/api/foods/${params.id}`)
+                loader:({params})=> fetch(`${import.meta.env.VITE_API_URL}/api/foods/${params.id}`)
+            },
+            {
+                path: '/update-foods/:id',
+                element: <UpdateMyFoodRequest/>,
+                loader: ({params}) => fetch(`${import.meta.env.VITE_API_URL}/update-food/${params.id}`)
             }
         ]
     }

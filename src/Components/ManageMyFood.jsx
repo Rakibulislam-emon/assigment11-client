@@ -3,6 +3,7 @@ import { TbEdit } from "react-icons/tb";
 import useAuth from "../Hooks/useAuth";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 const ManageMyFood = () => {
     const {user} = useAuth()
 
@@ -15,6 +16,11 @@ const ManageMyFood = () => {
         getData()
     },[user?.email])
     console.log(foods)
+
+
+    // update 
+
+
    
     return (
         <section className='container px-4 mx-auto pt-12'>
@@ -114,12 +120,14 @@ const ManageMyFood = () => {
                         >
                           <MdDelete className="size-6"/>
                         </button>
-                        <button
+                        <Link  to={`/update-foods/${food._id}`}
+                        
+                         
                           title='Edit'
                           className='text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none disabled:cursor-not-allowed'
                         >
                          <TbEdit className="size-6"/>
-                        </button>
+                        </Link >
                           
                       </td>
                     </tr>
