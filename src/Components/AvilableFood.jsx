@@ -22,13 +22,16 @@ const AvilableFood = () => {
 
     const fetchFoods = async () => {
         try {
+            
             const response = await axios.get(`${import.meta.env.VITE_API_URL}/foods`);
+            const availableFoods = response.data.filter(food => food.status === 'available');
+            setFoods(availableFoods);
             setFoods(response.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
-
+    console.log(foods)
     const handleSearch = async (searchQuery) => {
         try {
             const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/foods/search?foodName=${searchQuery}`);
