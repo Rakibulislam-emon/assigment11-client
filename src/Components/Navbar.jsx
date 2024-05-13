@@ -9,7 +9,7 @@ const Navbar = () => {
 
   
     return (
-        <div className='navbar shadow-lg bg-black  px-4 w-screen transition-colors duration-300'>
+        <div className='navbar  shadow-lg bg-black  px-4  transition-colors duration-300'>
             <div className='flex items-center justify-center '>
                 <Link to='/' className='flex gap-2 items-center'>
                     <img className='w-auto h-7' src={logo} alt='' />

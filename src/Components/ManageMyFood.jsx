@@ -4,6 +4,7 @@ import useAuth from "../Hooks/useAuth";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Delete from "../Pages/Delete";
 const ManageMyFood = () => {
     const {user} = useAuth()
 
@@ -19,6 +20,8 @@ const ManageMyFood = () => {
 
 
     // update 
+// delete
+const [showModal,setShowModal]= useState(false)
 
 
    
@@ -114,10 +117,12 @@ const ManageMyFood = () => {
                         </div>
                       </td>
                       <td className='px-4 py-4 flex space-x-8 text-sm whitespace-nowrap'>
-                        <button
+                        <button 
+                         onClick={()=> setShowModal(true)}
                           title='Delete'
                           className='text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none disabled:cursor-not-allowed'
                         >
+                           {showModal && <Delete foods={foods} onClose={()=> setShowModal(false)}/>}
                           <MdDelete className="size-6"/>
                         </button>
                         <Link  to={`/update-foods/${food._id}`}
