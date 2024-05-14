@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import useAuth from "../Hooks/useAuth";
+import useTitle from "../Hooks/useTitle";
+import { Link } from "react-router-dom";
 
 const MyFoodRequest = () => {
+    useTitle("My Food Requests");
     const { user  } = useAuth();
     const [foodRequests, setFoodRequests] = useState([]);
     // const [loading, setLoading] = useState(true); // State to track loading status
@@ -33,7 +36,7 @@ const MyFoodRequest = () => {
     // }
 
     return (
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-3 mt-10">
             {foodRequests.map(food => (
                 <div key={food._id} className="max-w-md w-full mx-auto overflow-hidden bg-white rounded-lg shadow-md flex flex-col">
                     <div className="w-full h-3/5">
@@ -49,9 +52,9 @@ const MyFoodRequest = () => {
                             <p className="text-sm text-gray-600">Request Date: {food.requestDate}</p>
                             {food.donationAmount && <p className="text-sm text-gray-600">Your Donation Amount: {food.donationAmount}</p>}
                         </div>
-                        <button className="w-full py-2 mt-4 font-semibold text-white uppercase bg-pink-500 border border-pink-500 rounded hover:bg-transparent hover:text-pink-500 transition duration-300">
+                        <Link to={`/single-food-details/${food._id}`} className="w-full text-center py-2 mt-4 font-semibold text-white uppercase bg-pink-500 border border-pink-500 rounded hover:bg-transparent hover:text-pink-500 transition duration-300">
                             View Detail
-                        </button>
+                        </Link>
                     </div>
                 </div>
             ))}

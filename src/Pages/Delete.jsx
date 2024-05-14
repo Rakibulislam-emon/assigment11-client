@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 
@@ -22,7 +23,7 @@ const Delete = ({foods,onClose}) => {
             const response = await axios.delete(`${import.meta.env.VITE_API_URL}/delete-foods/${_id}`);
 
             console.log(response.data.deleteCount); // Log the response data if needed
-            alert('delete success')
+            toast.success('delete success')
             onClose()
             navigate('/available-food')
             // Handle any success actions here

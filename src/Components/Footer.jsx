@@ -1,9 +1,9 @@
 
-import logo from '../assets/images/Document.png'
+import logo from '../assets/images/images.png'
 const Footer = () => {
     return (
         <div>
-            <footer className="bg-white dark:bg-gray-900 mt-20">
+            <footer className="bg-white dark:bg-gray-900 ">
     <div className="container p-6 mx-auto">
         <div className="lg:flex">
             <div className="w-full -mx-6 lg:w-2/5">

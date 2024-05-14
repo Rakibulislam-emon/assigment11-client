@@ -18,10 +18,14 @@ const FeaturedFood = () => {
    
     
     return (
-       <div  className='grid grid-cols-3 gap-10 mx-10'>
+       <div  >
+        <h1 className="text-center text-6xl font-lato mt-8">Explore Our Featured Foods</h1>
+        <div className='grid grid-cols-3 gap-10 mt-20 mx-10'>
+
             {
                 foods.map(food => <FeaturedFoodCard food={food} key={food._id}></FeaturedFoodCard>)
             }
+        </div>
        </div>
     );
 };

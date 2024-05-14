@@ -4,13 +4,13 @@ import axios from "axios";
 import { useState } from "react";
 import useAuth from "../Hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const RequestModal = ({ onClose, foods }) => {
-    const navigate = useNavigate()
-    const {user}= useAuth()
+    const navigate = useNavigate();
+    const { user } = useAuth();
     const { foodName, foodUrl, donator, pickupLocation, expiredDateTime, _id } = foods;
     const { email } = donator || {};
-   
  
     const getTodayDate = () => {
         const today = new Date();
@@ -27,94 +27,76 @@ const RequestModal = ({ onClose, foods }) => {
 
     const [defaultDate, setDefaultDate] = useState(getTodayDate());
 
-
-
-    const handleSubmit =async (e) => {
-        e.preventDefault()
-        const form = e.target
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const form = e.target;
         const requestedDate = form.requestDate.value;
         const userEmail = user?.email;
-        const additionalNotes = form.additionalNotes.value
-        const status = 'requested'
-         _id,email 
-
-
-    //    console.log ( requestedDate, foodName, foodUrl, donator, pickupLocation, expiredDateTime, _id,email )
-
+        const additionalNotes = form.additionalNotes.value;
+        const status = 'requested';
+    
         try {
-           const {data}= await  axios.put(`${import.meta.env.VITE_API_URL}/foods/${_id}`, {
-               userEmail , _id,email, requestedDate ,status ,additionalNotes
-            })
-            
-            console.log(data)
-            navigate('/available-food')
-            alert("Your request has been sent")
+            if (user?.email === email) {
+                return toast.error('Donator cannot request their own food');
+            }
+    
+            const { data } = await axios.put(`${import.meta.env.VITE_API_URL}/foods/${_id}`, {
+                userEmail,
+                _id,
+                email,
+                requestedDate,
+                status,
+                additionalNotes
+            });
+    
+            console.log(data);
+            navigate('/available-food');
+            toast.success("Your request has been sent");
         } catch (error) {
-            alert(error.message)
+            toast.error(error.message);
         }
-    }
-
+    };
 
     return (
-        <div className="py-12 bg-gray-700 transition duration-150 ease-in-out z-10 fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center" id="modal">
-            <div role="alert" className="container mx-auto w-full md:w-3/4 lg:w-2/3 max-w-2xl">
-                <div className="w-full p-12 bg-white rounded shadow-lg">
-                    <h1 className="text-2xl font-semibold font-lato text-center mb-6">ADD YOUR FOOD HERE..</h1>
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label htmlFor="foodName" className="block text-xs font-semibold text-gray-600 uppercase">Food Name</label>
-                                <input id="foodName" type="text" name="foodName" placeholder={foodName} className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" readOnly />
-                            </div>
-                            <div>
-                                <label htmlFor="foodImage" className="block text-xs font-semibold text-gray-600 uppercase">Food Image</label>
-                                <img className="object-cover w-20 h-16" src={foodUrl} alt="Food" />
-                            </div>
-                            <div>
-                                <label htmlFor="foodId" className="block text-xs font-semibold text-gray-600 uppercase">Food ID</label>
-                                <input id="foodId" type="text" name="foodId" placeholder={_id} className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" readOnly />
-                            </div>
-                            <div>
-                                <label htmlFor="donatorEmail" className="block text-xs font-semibold text-gray-600 uppercase">Food Donator Email</label>
-                                <input id="donatorEmail" type="text" name="donatorEmail" placeholder={email} className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" readOnly />
-                            </div>
-                            <div>
-                                <label htmlFor="donatorName" className="block text-xs font-semibold text-gray-600 uppercase">Food Donator Name</label>
-                                <input id="donatorName" type="text" name="donatorName" placeholder="Enter food donator name" className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" readOnly />
-                            </div>
-                            <div>
-                                <label htmlFor="userEmail" className="block text-xs font-semibold text-gray-600 uppercase">User Email</label>
-                                <input id="userEmail" type="text" name="userEmail" placeholder={user?.email} className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" readOnly />
-                            </div>
-                            <div>
-                                <label htmlFor="requestDate" className="block text-xs font-semibold text-gray-600 uppercase">Request Date</label>
-                                <input id="requestDate" type="text" name="requestDate" value={defaultDate} className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" readOnly />
-                            </div>
-                            <div>
-                                <label htmlFor="pickupLocation" className="block text-xs font-semibold text-gray-600 uppercase">Pickup Location</label>
-                                <input id="pickupLocation" type="text" name="pickupLocation" placeholder={pickupLocation} className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" readOnly />
-                            </div>
-                            <div>
-                                <label htmlFor="expireDate" className="block text-xs font-semibold text-gray-600 uppercase">Expire Date</label>
-                                <input id="expireDate" type="text" name="expireDate" placeholder={expiredDateTime} className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" readOnly />
-                            </div>
+        <div className="flex justify-center items-center min-h-screen bg-gray-700 bg-opacity-50 fixed top-0 right-0 bottom-0 left-0">
+            <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
+                <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">Request Food</h1>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label htmlFor="foodName" className="block text-sm font-semibold text-gray-600 uppercase">Food Name</label>
+                            <input id="foodName" type="text" name="foodName" value={foodName} className="w-full p-3 mt-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none focus:ring focus:ring-indigo-400" readOnly />
                         </div>
                         <div>
-                            <label htmlFor="additionalNotes" className="block text-xs font-semibold text-gray-600 uppercase">Additional Notes</label>
-                            <textarea id="additionalNotes" name="additionalNotes" rows="3" placeholder="Enter any additional notes..." className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"></textarea>
+                            <label htmlFor="foodImage" className="block text-sm font-semibold text-gray-600 uppercase">Food Image</label>
+                            <img className="w-20 h-16 object-cover mt-2 rounded-md" src={foodUrl} alt="Food" />
                         </div>
-                        <div className="flex justify-around">
-                            <button type="submit" className="w-52 py-3 font-medium tracking-widest text-white uppercase bg-green-400 shadow-lg focus:outline-none rounded-lg hover:shadow-none">
-                                Request
-                            </button>
-                            <button onClick={onClose} type="submit" className="w-52 py-3 font-medium tracking-widest text-white rounded-lg uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
-                                Cancel
-                            </button>
+                        <div>
+                            <label htmlFor="pickupLocation" className="block text-sm font-semibold text-gray-600 uppercase">Pickup Location</label>
+                            <input id="pickupLocation" type="text" name="pickupLocation" value={pickupLocation} className="w-full p-3 mt-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none focus:ring focus:ring-indigo-400" readOnly />
                         </div>
-                    </form>
-
-                </div>
-
+                        <div>
+                            <label htmlFor="expireDate" className="block text-sm font-semibold text-gray-600 uppercase">Expire Date</label>
+                            <input id="expireDate" type="text" name="expireDate" value={expiredDateTime} className="w-full p-3 mt-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none focus:ring focus:ring-indigo-400" readOnly />
+                        </div>
+                        <div>
+                            <label htmlFor="requestDate" className="block text-sm font-semibold text-gray-600 uppercase">Request Date</label>
+                            <input id="requestDate" type="text" name="requestDate" value={defaultDate} className="w-full p-3 mt-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none focus:ring focus:ring-indigo-400" readOnly />
+                        </div>
+                    </div>
+                    <div>
+                        <label htmlFor="additionalNotes" className="block text-sm font-semibold text-gray-600 uppercase">Additional Notes</label>
+                        <textarea id="additionalNotes" name="additionalNotes" rows="3" placeholder="Enter any additional notes..." className="w-full p-3 mt-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none focus:ring focus:ring-indigo-400"></textarea>
+                    </div>
+                    <div className="flex justify-around">
+                        <button type="submit" className="w-52 py-3 font-semibold text-white uppercase bg-green-400 rounded-md hover:bg-green-500 focus:outline-none focus:ring focus:ring-green-400">
+                            Request
+                        </button>
+                        <button onClick={onClose} type="button" className="w-52 py-3 font-semibold text-white uppercase bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:ring focus:ring-gray-400">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     );

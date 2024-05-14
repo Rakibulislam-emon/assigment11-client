@@ -4,13 +4,22 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+
+const {
+  VITE_apiKey,
+  VITE_authDomain,
+  VITE_projectId,
+  VITE_storageBucket,
+  VITE_messagingSenderId,
+  VITE_appId,
+} = import.meta.env;
 const firebaseConfig = {
-  apiKey: "AIzaSyArbKhiH0z6bgf_mvBOzHCDMq9urxLAE7E",
-  authDomain: "food-share-hub-3d61b.firebaseapp.com",
-  projectId: "food-share-hub-3d61b",
-  storageBucket: "food-share-hub-3d61b.appspot.com",
-  messagingSenderId: "175626504384",
-  appId: "1:175626504384:web:952a81b9a5c633abcac525"
+  apiKey: VITE_apiKey,
+  authDomain: VITE_authDomain,
+  projectId: VITE_projectId,
+  storageBucket: VITE_storageBucket,
+  messagingSenderId: VITE_messagingSenderId,
+  appId: VITE_appId,
 };
 
 // Initialize Firebase

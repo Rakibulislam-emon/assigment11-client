@@ -1,72 +1,94 @@
 import axios from "axios";
 import useAuth from "../Hooks/useAuth";
 import toast from "react-hot-toast";
-
-
+import useTitle from "../Hooks/useTitle";
+import { useNavigate } from "react-router-dom";
 
 const AddFood = () => {
-    const {user,} = useAuth();
-    
-   const {displayName,email,photoURL}= user || {};
-   console.log(displayName,email,photoURL,'user not found')
-   
-   const handleAddFood = async e => {
-    e.preventDefault();
+    useTitle("AddFood");
+    const { user } = useAuth();
+    const navigate = useNavigate();
+    const { displayName, email, photoURL } = user || {};
 
-    const form = e.target;
-    const formData = new FormData(form);
+    const handleAddFood = async (e) => {
+        e.preventDefault();
 
-    const foodName = formData.get("foodName");
-    const foodUrl = formData.get("foodImageURL");
-    const foodQuantity = formData.get("foodQuantity");
-    const pickupLocation = formData.get("pickupLocation");
-    const expiredDateTime = formData.get("expiredDateTime");
-    const additionalNotes = formData.get("additionalNotes");
-    const status = "available";
-    const donator = {
-        displayName,
-        email,
-        photoURL
+        const form = e.target;
+        const formData = new FormData(form);
+
+        const foodName = formData.get("foodName");
+        const foodUrl = formData.get("foodImageURL");
+        const foodQuantity = formData.get("foodQuantity");
+        const pickupLocation = formData.get("pickupLocation");
+        const expiredDateTime = formData.get("expiredDateTime");
+        const additionalNotes = formData.get("additionalNotes");
+        const status = "available";
+        const donator = {
+            displayName,
+            email,
+            photoURL,
+        };
+
+        const foodData = {
+            foodName,
+            foodQuantity,
+            pickupLocation,
+            expiredDateTime,
+            additionalNotes,
+            foodUrl,
+            status,
+            donator,
+        };
+        try {
+            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/foods`, foodData);
+            console.log(data);
+            if (data.insertedId) {
+                toast.success("Your food has been successfully added");
+                navigate("/available-food");
+                form.reset();
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
-    const foodData={foodName,  foodQuantity, pickupLocation, expiredDateTime, additionalNotes, foodUrl, status, donator,};
-    try {
-        const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/foods`,foodData) 
-        console.log(data);
-        if( data.insertedId ){
-
-            toast.success('your food has been successfully added')
-            form.reset();
-        }
-    } catch (error) {
-        console.log(error);
-    }
-};
-
     return (
-
-        <div className="grid min-h-screen place-items-center" style={{
-            backgroundImage: `url('https://i.ibb.co/n1vg2kk/volunteers-holding-box-filled-with-food-donation-23-2148733768.jpg')`,
-        }}>
-            <div className="w-11/12 p-12 bg-white sm:w-8/12 md:w-1/2 lg:w-5/12">
-                <h1 className="text-xl font-semibold font-lato">ADD YOUR FOOD HERE..</h1>
-                <form onSubmit={handleAddFood} className="mt-6">
-                    <label htmlFor="foodName" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Food Name</label>
-                    <input id="foodName" type="text" name="foodName" placeholder="Enter food name" className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
-
-                    <label htmlFor="foodImage" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Food Image URl</label>
-                    <div className="flex items-center">
-                  
-                    <input id="foodImageURL" type="url" name="foodImageURL" placeholder="Enter image URL" className="container p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
-                    </div>
-
-
-                    <label htmlFor="foodQuantity" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Food Quantity</label>
-                    <input id="foodQuantity" type="number" name="foodQuantity" placeholder="Enter food quantity" className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
-
-                    <label htmlFor="pickupLocation" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Pickup Location</label>
-                    <select id="pickupLocation" name="pickupLocation" defaultValue="" className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required>
-                        <option value="" disabled>Select pickup location</option>
+        <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-400 to-purple-600">
+            <div className="w-11/12 max-w-md p-8 bg-white rounded-lg shadow-lg">
+                <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Add Your Food</h1>
+                <form onSubmit={handleAddFood} className="space-y-4">
+                    <input
+                        id="foodName"
+                        type="text"
+                        name="foodName"
+                        placeholder="Food Name"
+                        className="w-full px-4 py-2 text-gray-800 bg-gray-200 rounded-md focus:outline-none focus:ring focus:ring-indigo-400"
+                        required
+                    />
+                    <input
+                        id="foodImageURL"
+                        type="url"
+                        name="foodImageURL"
+                        placeholder="Food Image URL"
+                        className="w-full px-4 py-2 text-gray-800 bg-gray-200 rounded-md focus:outline-none focus:ring focus:ring-indigo-400"
+                        required
+                    />
+                    <input
+                        id="foodQuantity"
+                        type="number"
+                        name="foodQuantity"
+                        placeholder="Food Quantity"
+                        className="w-full px-4 py-2 text-gray-800 bg-gray-200 rounded-md focus:outline-none focus:ring focus:ring-indigo-400"
+                        required
+                    />
+                    <select
+                        id="pickupLocation"
+                        name="pickupLocation"
+                        className="w-full px-4 py-2 text-gray-800 bg-gray-200 rounded-md focus:outline-none focus:ring focus:ring-indigo-400"
+                        defaultValue=""
+                        required
+                    >
+                        <option value="" disabled>Select Pickup Location</option>
                         <option value="Dhaka">Dhaka</option>
                         <option value="Cumilla">Cumilla</option>
                         <option value="Sylhet">Sylhet</option>
@@ -78,23 +100,29 @@ const AddFood = () => {
                         <option value="Barishal">Barishal</option>
                         <option value="Rangpur">Rangpur</option>
                     </select>
-
-
-                    <label htmlFor="expiredDateTime" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Expired Date/Time</label>
-                    <input id="expiredDateTime" type="datetime-local" name="expiredDateTime" className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner" required />
-
-                    <label htmlFor="additionalNotes" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Additional Notes</label>
-                    <textarea id="additionalNotes" name="additionalNotes" rows="3" placeholder="Enter any additional notes..." className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"></textarea>
-
-                    <button type="submit" className="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-black shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none">
+                    <input
+                        id="expiredDateTime"
+                        type="datetime-local"
+                        name="expiredDateTime"
+                        className="w-full px-4 py-2 text-gray-800 bg-gray-200 rounded-md focus:outline-none focus:ring focus:ring-indigo-400"
+                        required
+                    />
+                    <textarea
+                        id="additionalNotes"
+                        name="additionalNotes"
+                        rows="3"
+                        placeholder="Additional Notes"
+                        className="w-full px-4 py-2 text-gray-800 bg-gray-200 rounded-md focus:outline-none focus:ring focus:ring-indigo-400"
+                    ></textarea>
+                    <button
+                        type="submit"
+                        className="w-full px-4 py-2 text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-400"
+                    >
                         Add
                     </button>
-
                 </form>
-
             </div>
         </div>
-
     );
 };
 

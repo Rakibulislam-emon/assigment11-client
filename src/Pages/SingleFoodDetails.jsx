@@ -2,8 +2,10 @@
 import { useState } from 'react';
 import {  useLoaderData } from 'react-router-dom';
 import RequestModal from '../Components/RequestModal';
+import useTitle from '../Hooks/useTitle';
 
 const SingleFoodDetails = () => {
+    useTitle('AvailableFood |  food details')
     const [showModal,setShowModal]= useState(false)
     const foods = useLoaderData();
     const { foodName, foodUrl, donator, foodQuantity, pickupLocation, expiredDateTime, additionalNotes, } = foods;

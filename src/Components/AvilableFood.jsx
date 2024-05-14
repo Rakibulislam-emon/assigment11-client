@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios'; // Import Axios
 import AddedFoodsCard from './AddedFoodsCard';
+import useTitle from '../Hooks/useTitle';
 
 const AvilableFood = () => {
+
+    useTitle('Available foods')
     const [foods, setFoods] = useState([]);
     const [query, setQuery] = useState('');
     const [searched, setSearched] = useState(false);

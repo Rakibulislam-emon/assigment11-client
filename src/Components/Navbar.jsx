@@ -52,6 +52,7 @@ const Navbar = () => {
                             <li className='mt-2'>
                                 <Link to={'/register'} onClick={logOut} className='bg-gray-200 block text-center transition-colors duration-300'>Logout</Link>
                             </li>
+                            
                         </ul>
                     </div>
                 )}

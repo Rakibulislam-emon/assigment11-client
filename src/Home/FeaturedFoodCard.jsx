@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
 
+import { Link } from "react-router-dom";
+
 const FeaturedFoodCard = ({ food }) => {
-    const { foodName, foodUrl, donator, foodQuantity, pickupLocation, expiredDateTime, additionalNotes } = food;
+    const { foodName, foodUrl, donator, foodQuantity, pickupLocation, expiredDateTime, additionalNotes,_id } = food;
     const { displayName, email } = donator || {};
 
     return (
         <div className="max-w-md w-full h-[600px] mx-auto overflow-hidden bg-white rounded-lg shadow-md flex flex-col">
             <div className="w-full h-3/5">
-                <img src={foodUrl} alt="Food" className="object-cover w-full h-full" />
+                <img src={foodUrl} alt="Food" className="object-cover w-full h-[300PX]" />
             </div>
             <div className="flex flex-col justify-between p-6">
                 <div>
@@ -21,9 +23,9 @@ const FeaturedFoodCard = ({ food }) => {
                         Additional Notes: {additionalNotes && additionalNotes.length > 40 ? `${additionalNotes.substring(0, 40)}...` : additionalNotes}
                     </p>
                 </div>
-                <button className="w-full py-2 mt-4 font-semibold text-white uppercase bg-pink-500 border border-pink-500 rounded hover:bg-transparent hover:text-pink-500 transition duration-300">
+                <Link to={`/single-food-details/${_id}`} className="w-full text-center py-2 mt-4 font-semibold text-white uppercase bg-pink-500 border border-pink-500 rounded hover:bg-transparent hover:text-pink-500 transition duration-300">
                     View Detail
-                </button>
+                </Link>
             </div>
         </div>
     );
