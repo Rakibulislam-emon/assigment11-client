@@ -13,7 +13,7 @@ const SingleFoodDetails = () => {
     console.log(donator)
     return (
 
-            <div className="max-w-lg mt-10 mx-auto overflow-hidden bg-white rounded-lg shadow-lg">
+            <div className="max-w-lg  mt-20 mx-auto overflow-hidden bg-white rounded-lg shadow-lg">
                 <div className="relative">
                     <img className="object-cover w-full h-64" src={foodUrl} alt="Food" />
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50" />

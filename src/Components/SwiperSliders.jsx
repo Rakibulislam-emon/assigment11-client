@@ -26,7 +26,7 @@ import Slide from './Slide';
 const SwiperSliders = () => {
   return (
     <div>
-       <div className=''>
+       <div className='mt-16'>
       <Swiper
         spaceBetween={30}
         centeredSlides={true}
