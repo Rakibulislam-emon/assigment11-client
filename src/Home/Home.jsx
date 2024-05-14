@@ -10,6 +10,7 @@ const Home = () => {
     return (
         <div>
             <SwiperSliders></SwiperSliders>
+            
             <FeaturedFood/>
             <Faq/>
             <Testimonials/>
