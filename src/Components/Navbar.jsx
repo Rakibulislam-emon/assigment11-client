@@ -1,13 +1,18 @@
 import logo from '../assets/images/images.png';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import useAuth from '../Hooks/useAuth';
+import { useEffect } from 'react';
 
 const Navbar = () => {
-    const { user, logOut } = useAuth();
-
+    const { user, logOut } = useAuth() || {};
+    const navigate = useNavigate()
     // className={({ isActive }) => isActive ? 'btn btn-ghost border-green-400 text-green-400' : 'btn w-32 btn-ghost'}
+    useEffect(() => {
+        if (!user) {
+            navigate('/login');
+        }
+    }, [user, navigate]);
 
-  
     return (
         <div className='navbar  shadow-lg bg-black  px-4  transition-colors duration-300'>
             <div className='flex items-center justify-center '>
@@ -45,7 +50,7 @@ const Navbar = () => {
                         <ul tabIndex={0} className='menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52'>
 
                             <li className='mt-2'>
-                                <button onClick={logOut} className='bg-gray-200 block text-center transition-colors duration-300'>Logout</button>
+                                <Link to={'/register'} onClick={logOut} className='bg-gray-200 block text-center transition-colors duration-300'>Logout</Link>
                             </li>
                         </ul>
                     </div>

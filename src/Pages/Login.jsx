@@ -1,41 +1,46 @@
 import { Link, useNavigate } from "react-router-dom"
 import useAuth from "../Hooks/useAuth"
 import toast from "react-hot-toast"
-
+import axios from 'axios';
 const Login = () => {
-    const navigate = useNavigate()
-    const { signIn, signInWithGoogle } =useAuth()
-  
-    // Google Signin
-    const handleGoogleSignIn = async () => {
-      try {
-        await signInWithGoogle()
-        toast.success('Signin Successful')
-        navigate('/')
-      } catch (err) {
-        console.log(err)
-        toast.error(err?.message)
-      }
+  const navigate = useNavigate();
+  const { signIn, signInWithGoogle } = useAuth();
+
+  // Google Signin
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithGoogle();
+      // Assuming signInWithGoogle returns the user data upon successful authentication
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/jwt`,{ email: result?.user?.email }, { withCredentials: true });
+      console.log(data);
+      toast.success('Signin Successful'); // Show success toast
+      navigate('/'); // Navigate to home page
+    } catch (err) {
+      console.error(err);
+      toast.error('Google Signin Failed'); // Show error toast
     }
-  
-    // Email Password Signin
-    const handleSignIn = async e => {
-      e.preventDefault()
-      const form = e.target
-      const email = form.email.value
-      const pass = form.password.value
-      console.log({ email, pass })
-      try {
-        //User Login
-        const result = await signIn(email, pass)
-        console.log(result)
-        navigate('/')
-        toast.success('Signin Successful')
-      } catch (err) {
-        console.log(err)
-        toast.error(err?.message)
-      }
+  };
+
+  // Email Password Signin
+  const handleSignIn = async e => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const pass = form.password.value;
+    
+    try {
+      // User Login
+      const result = await signIn(email, pass);
+      // Assuming signIn returns the user data upon successful authentication
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, { email: result?.user?.email }, { withCredentials: true });
+      console.log(data);
+      toast.success('Signin Successful'); // Show success toast
+      navigate('/'); // Navigate to home page
+    } catch (err) {
+      console.error(err);
+      toast.error('Email/Password Signin Failed'); // Show error toast
     }
+  };
 
     return (
       <div className='flex justify-center items-center min-h-[calc(100vh-306px)]'>

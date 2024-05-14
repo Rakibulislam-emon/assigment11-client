@@ -11,7 +11,7 @@ const ManageMyFood = () => {
     const [foods,setFoods]= useState([])
     useEffect(  () => {
         const getData = async () => {
-            const {data}= await axios.get(`${import.meta.env.VITE_API_URL}/posted-food/${user?.email}`)
+            const {data}= await axios.get(`${import.meta.env.VITE_API_URL}/posted-food/${user?.email}`,{withCredentials:true})
             setFoods(data)
         }
         getData()

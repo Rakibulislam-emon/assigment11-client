@@ -10,6 +10,7 @@ import Home from '../Home/Home';
 import ErrorPage from '../Components/ErrorPage';
 import SingleFoodDetails from '../Pages/SingleFoodDetails';
 import UpdateMyFoodRequest from '../Pages/UpdateMyFoodRequest';
+import PrivateRoute from './PrivateRoute';
 
 const router = createBrowserRouter([
     {
@@ -36,15 +37,15 @@ const router = createBrowserRouter([
             },
             {
                 path:"/add-food",
-                element:<AddFood/>
+                element:<PrivateRoute><AddFood></AddFood></PrivateRoute>
             },
             {
                 path:"/manage-my-food",
-                element:<ManageMyFood/>
+                element:<PrivateRoute><ManageMyFood/></PrivateRoute>
             },
             {
                 path:"/my-food-Request",
-                element:<MyFoodRequest/>
+                element:<PrivateRoute><MyFoodRequest/></PrivateRoute>
             },
             {
                 path:'/single-food-details/:id',

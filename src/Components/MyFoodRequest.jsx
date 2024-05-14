@@ -3,30 +3,38 @@ import { useEffect, useState } from "react";
 import useAuth from "../Hooks/useAuth";
 
 const MyFoodRequest = () => {
-    const { user } = useAuth();
+    const { user  } = useAuth();
     const [foodRequests, setFoodRequests] = useState([]);
+    // const [loading, setLoading] = useState(true); // State to track loading status
     const userEmail = user?.email;
 
     useEffect(() => {
         const fetchFoodRequests = async () => {
+            // if(!user){
+            //     return
+            // }
             try {
-                const response = await axios.get(`http://localhost:5000/foodRequests?userEmail=${userEmail}`);
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/foodRequests?userEmail=${userEmail}`, { withCredentials: true });
                 setFoodRequests(response.data);
             } catch (error) {
                 console.error('Error fetching food requests:', error);
-            }
+            } 
         };
 
         fetchFoodRequests();
-    }, [userEmail]);
+    }, [user, userEmail]);
 
-    console.log(foodRequests); 
+    // Show loading spinner while data is being fetched
+    // if (loading) {
+    //     return <div className="spinner-border text-primary" role="status">
+    //             <span className=" size-20">Loading...</span>
     
+    //     </div>; // You can replace this with your preferred loading spinner component
+    // }
+
     return (
         <div className="grid grid-cols-3">
-            
             {foodRequests.map(food => (
-                
                 <div key={food._id} className="max-w-md w-full mx-auto overflow-hidden bg-white rounded-lg shadow-md flex flex-col">
                     <div className="w-full h-3/5">
                         <img src={food.foodUrl} alt="Food" className="object-cover w-full h-full" />

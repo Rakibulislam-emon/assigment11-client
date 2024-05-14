@@ -1,10 +1,11 @@
 import { Link, useNavigate } from "react-router-dom"
 import useAuth from "../Hooks/useAuth";
 import toast from 'react-hot-toast'
+import axios from "axios";
 
 const Registration = () => {
     const navigate = useNavigate()
-    const { signInWithGoogle, createUser, updateUserProfile, user, setUser } =
+    const { signInWithGoogle, createUser, updateUserProfile,  setUser } =
       useAuth()
   
     const handleSignUp
@@ -19,12 +20,14 @@ const Registration = () => {
       try {
         //2. User Registration
         const result = await createUser(email, pass)
-        console.log(result)
         await updateUserProfile(name, photo)
-        setUser({ ...user, photoURL: photo, displayName: name })
+        setUser({ ...result, photoURL: photo, displayName: name })
+        const {data}= await axios.post(`${import.meta.env.VITE_API_URL}/jwt`,{email : result?.user?.email},{withCredentials: true})
 
-        navigate('/')
         toast.success('Signup Successful')
+        console.log(data)
+        navigate('/login')
+       
       } catch (err) {
         console.log(err)
         toast.error(err?.message)
